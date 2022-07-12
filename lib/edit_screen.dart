@@ -18,6 +18,9 @@ class _EditScreenState extends State<EditScreen> {
   final descriptionController = TextEditingController();
   final imageURLController = TextEditingController();
 
+  String imgURL='';
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -25,6 +28,7 @@ class _EditScreenState extends State<EditScreen> {
     priceController.text = widget.product.price.toString();
     descriptionController.text = widget.product.description;
     imageURLController.text = widget.product.imageURL;
+    imgURL=widget.product.imageURL;
     super.initState();
   }
 
@@ -51,21 +55,14 @@ class _EditScreenState extends State<EditScreen> {
             padding: EdgeInsets.only(right: ScreenUtil().setHeight(30)),
             child: IconButton(
               onPressed: () {
-                setState(() {
-                  widget.product.name = nameController.text.isEmpty
-                      ? widget.product.name
-                      : nameController.text;
-                  widget.product.price = priceController.text.isEmpty
-                      ? widget.product.price
-                      : double.parse(priceController.text);
-                  widget.product.description =
-                      descriptionController.text.isEmpty
-                          ? widget.product.description
-                          : descriptionController.text;
-                  widget.product.imageURL = imageURLController.text.isEmpty
-                      ? widget.product.imageURL
-                      : imageURLController.text;
-                });
+                if (_formKey.currentState?.validate() == true) {
+                  _formKey.currentState?.save();
+                  widget.product = Product(
+                      name: nameController.text,
+                      imageURL: imageURLController.text,
+                      description: descriptionController.text,
+                      price: double.tryParse(priceController.text)!);
+                }
               },
               icon: Icon(
                 Icons.save,
@@ -154,94 +151,133 @@ class _EditScreenState extends State<EditScreen> {
                   ],
                 ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                  labelStyle: TextStyle(
-                    fontSize: ScreenUtil().setWidth(50),
-                  ),
-                ),
-                controller: nameController,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setWidth(50),
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    labelText: 'Price',
-                    labelStyle: TextStyle(
-                      fontSize: ScreenUtil().setWidth(50),
-                    ),),
-                controller: priceController,
-                keyboardType: TextInputType.number,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setWidth(50),
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    labelText: 'Description',
-                    labelStyle: TextStyle(
-                      fontSize: ScreenUtil().setWidth(50),
-                    ),),
-                controller: descriptionController,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setWidth(50),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: ScreenUtil().setHeight(200),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
+              Form(
+                key: _formKey,
+                child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: Colors.grey)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Image.asset(
-                          widget.product.imageURL,
-                          width: ScreenUtil().setWidth(200),
-                          height: ScreenUtil().setHeight(200),
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, object, StackTrace? strace) {
-                            return SizedBox(
-                              width: ScreenUtil().setWidth(200),
-                              height: ScreenUtil().setHeight(200),
-                              child: Image.asset(
-                                'assets/images/no_image.png',
-                                width: 80,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: ScreenUtil().setWidth(20),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Image URL',
-                          labelStyle: TextStyle(
-                            fontSize: ScreenUtil().setWidth(50),
-                          ),
-                        ),
-                        maxLines: 1,
-                        controller: imageURLController,
-                        style: TextStyle(
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Title',
+                        labelStyle: TextStyle(
                           fontSize: ScreenUtil().setWidth(50),
                         ),
+                      ),
+                      controller: nameController,
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setWidth(50),
+                      ),
+                      validator: (String? value) {
+                        if (value?.isEmpty == true) {
+                          return 'Title is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Price',
+                        labelStyle: TextStyle(
+                          fontSize: ScreenUtil().setWidth(50),
+                        ),
+                      ),
+                      controller: priceController,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setWidth(50),
+                      ),
+                      validator: (value) {
+                        if (value?.isEmpty == true) {
+                          return 'Please enter is price';
+                        }
+                        if (double.tryParse(value!) == null) {
+                          return 'Please enter is valid number';
+                        }
+                        if (double.tryParse(value)! <= 0) {
+                          return 'Please enter a number greater than 0';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        labelStyle: TextStyle(
+                          fontSize: ScreenUtil().setWidth(50),
+                        ),
+                      ),
+                      controller: descriptionController,
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setWidth(50),
+                      ),
+                      validator: (String? value) {
+                        if (value?.isEmpty == true) {
+                          return 'Title is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: ScreenUtil().setHeight(200),
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(color: Colors.grey)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: Image.asset(
+                                imgURL,
+                                width: ScreenUtil().setWidth(200),
+                                height: ScreenUtil().setHeight(200),
+                                fit: BoxFit.cover,
+                                errorBuilder:
+                                    (context, object, StackTrace? strace) {
+                                  return SizedBox(
+                                    width: ScreenUtil().setWidth(200),
+                                    height: ScreenUtil().setHeight(200),
+                                    child: Image.asset(
+                                      imgURL='assets/images/no_image.png',
+                                      width: 80,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: ScreenUtil().setWidth(20),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Image URL',
+                                labelStyle: TextStyle(
+                                  fontSize: ScreenUtil().setWidth(50),
+                                ),
+                              ),
+                              maxLines: 1,
+                              controller: imageURLController,
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setWidth(50),
+                              ),
+                              onChanged: (value){
+                                setState((){
+                                  imgURL=value;
+                                });
+                              },
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -186,63 +186,90 @@ class _HomeScreenState extends State<HomeScreen> {
           'Delete Item',
           style: TextStyle(fontSize: ScreenUtil().setHeight(50)),
         ),
-        content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(
-            Icons.delete,
-            color: Colors.red,
-            size: ScreenUtil().setHeight(50),
-          ),
-          SizedBox(
-            width: ScreenUtil().setWidth(50),
-          ),
-          Text(
-            'Are You Sure?',
-            style: TextStyle(fontSize: ScreenUtil().setHeight(50)),
-          ),
-        ]),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: ScreenUtil().setWidth(300),
-                height: ScreenUtil().setHeight(150),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      products.removeAt(index);
-                    });
-                  },
-                  child: Text(
-                    'Yes, Delete',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setHeight(40),
-                    ),
-                  ),
-                ),
+        content: Container(
+          width: ScreenUtil().setWidth(800),
+          height: ScreenUtil().setHeight(200),
+          child: Center(
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: ScreenUtil().setHeight(50),
               ),
               SizedBox(
                 width: ScreenUtil().setWidth(50),
               ),
-              SizedBox(
-                width: ScreenUtil().setWidth(300),
-                height: ScreenUtil().setHeight(150),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'No',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setHeight(40),
+              Text(
+                'Are You Sure?',
+                style: TextStyle(fontSize: ScreenUtil().setHeight(50)),
+              ),
+            ]),
+          ),
+        ),
+        actions: [
+          Container(
+            width: ScreenUtil().setWidth(800),
+            height: ScreenUtil().setHeight(200),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: ScreenUtil().setWidth(300),
+                  height: ScreenUtil().setHeight(100),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        products.removeAt(index);
+                      });
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Yes, Delete',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setHeight(40),
+                      ),
                     ),
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  width: ScreenUtil().setWidth(75),
+                ),
+                SizedBox(
+                  width: ScreenUtil().setWidth(300),
+                  height: ScreenUtil().setHeight(100),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setHeight(40),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           )
         ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
       ),
     );
   }
@@ -260,149 +287,166 @@ class _HomeScreenState extends State<HomeScreen> {
     final imageUrlController = TextEditingController();
 
     return showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(
-                'Add Item',
-                style: TextStyle(
-                  fontSize: ScreenUtil().setWidth(50),
-                ),
-              ),
-              actions: [
-                SingleChildScrollView(
-                  child: Container(
-                    height: ScreenUtil().setHeight(800),
-                    width: ScreenUtil().setWidth(700),
-                    margin: const EdgeInsets.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Product name',
-                            labelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(40),
-                            ),
-                            floatingLabelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(50),
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setHeight(50),
-                          ),
-                          cursorHeight: ScreenUtil().setHeight(75),
-                          controller: nameController,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Product price',
-                            labelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(40),
-                            ),
-                            floatingLabelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(50),
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setHeight(50),
-                          ),
-                          cursorHeight: ScreenUtil().setHeight(75),
-                          controller: priceController,
-                          keyboardType: TextInputType.number,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Product description',
-                            labelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(40),
-                            ),
-                            floatingLabelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(50),
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setHeight(50),
-                          ),
-                          cursorHeight: ScreenUtil().setHeight(75),
-                          controller: descriptionController,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Product imageUrl',
-                            labelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(40),
-                            ),
-                            floatingLabelStyle: TextStyle(
-                              fontSize: ScreenUtil().setHeight(50),
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setHeight(50),
-                          ),
-                          cursorHeight: ScreenUtil().setHeight(75),
-                          controller: imageUrlController,
-                          keyboardType: TextInputType.url,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: ScreenUtil().setHeight(200),
-                              height: ScreenUtil().setHeight(100),
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    product.name = nameController.text.isEmpty
-                                        ? product.name
-                                        : nameController.text;
-                                    product.price = priceController.text.isEmpty
-                                        ? product.price
-                                        : double.parse(priceController.text);
-                                    product.description =
-                                        descriptionController.text.isEmpty
-                                            ? product.description
-                                            : descriptionController.text;
-                                    product.imageURL =
-                                        imageUrlController.text.isEmpty
-                                            ? product.imageURL
-                                            : imageUrlController.text;
-                                    Navigator.pop(context, product);
-                                    setState(() {
-                                      products.add(product);
-                                    });
-                                  },
-                                  child: Text(
-                                    'Add Item',
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setHeight(35)),
-                                  )),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(100),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(200),
-                              height: ScreenUtil().setHeight(100),
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setHeight(35)),
-                                  )),
-                            )
-                          ],
-                        )
-                      ],
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+          'Add Item',
+          style: TextStyle(
+            fontSize: ScreenUtil().setWidth(50),
+          ),
+        ),
+        actions: [
+          SingleChildScrollView(
+            child: Container(
+              height: ScreenUtil().setHeight(800),
+              width: ScreenUtil().setWidth(700),
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Product name',
+                      labelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(40),
+                      ),
+                      floatingLabelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(50),
+                      ),
                     ),
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(50),
+                    ),
+                    cursorHeight: ScreenUtil().setHeight(75),
+                    controller: nameController,
                   ),
-                ),
-              ],
-            ));
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Product price',
+                      labelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(40),
+                      ),
+                      floatingLabelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(50),
+                      ),
+                    ),
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(50),
+                    ),
+                    cursorHeight: ScreenUtil().setHeight(75),
+                    controller: priceController,
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Product description',
+                      labelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(40),
+                      ),
+                      floatingLabelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(50),
+                      ),
+                    ),
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(50),
+                    ),
+                    cursorHeight: ScreenUtil().setHeight(75),
+                    controller: descriptionController,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Product imageUrl',
+                      labelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(40),
+                      ),
+                      floatingLabelStyle: TextStyle(
+                        fontSize: ScreenUtil().setHeight(50),
+                      ),
+                    ),
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(50),
+                    ),
+                    cursorHeight: ScreenUtil().setHeight(75),
+                    controller: imageUrlController,
+                    keyboardType: TextInputType.url,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: ScreenUtil().setHeight(250),
+                        height: ScreenUtil().setHeight(100),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              product.name = nameController.text.isEmpty
+                                  ? product.name
+                                  : nameController.text;
+                              product.price = priceController.text.isEmpty
+                                  ? product.price
+                                  : double.parse(priceController.text);
+                              product.description =
+                                  descriptionController.text.isEmpty
+                                      ? product.description
+                                      : descriptionController.text;
+                              product.imageURL = imageUrlController.text.isEmpty
+                                  ? product.imageURL
+                                  : imageUrlController.text;
+                              Navigator.pop(context, product);
+                              setState(() {
+                                products.add(product);
+                              });
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              'Add Item',
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setHeight(35)),
+                            )),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setWidth(100),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setWidth(250),
+                        height: ScreenUtil().setHeight(100),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setHeight(35),),
+                            ),),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+    );
   }
 }
