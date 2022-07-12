@@ -18,7 +18,6 @@ class _EditScreenState extends State<EditScreen> {
   final descriptionController = TextEditingController();
   final imageURLController = TextEditingController();
 
-  bool _loadImage=true;
 
   @override
   void initState() {
@@ -26,20 +25,7 @@ class _EditScreenState extends State<EditScreen> {
     priceController.text = widget.product.price.toString();
     descriptionController.text = widget.product.description;
     imageURLController.text = widget.product.imageURL;
-    Future.delayed(const Duration(milliseconds: 200),(){
-      setState((){});
-      loadImage();
-    });
     super.initState();
-  }
-
-  void loadImage(){
-    _loadImage=true;
-    precacheImage(AssetImage(widget.product.imageURL), context,onError: (e,stackTrace){
-      setState((){
-        loadImage();
-      });
-    });
   }
 
   @override
